@@ -24,7 +24,7 @@ else
     private List<SimpleElement>? _nodes;
     private Vector2 _dragpositionstart;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
         _nodes = Enumerable.Range(1, 10).Select(i => new SimpleElement
         {
