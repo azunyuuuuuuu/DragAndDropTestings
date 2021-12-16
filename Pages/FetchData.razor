@@ -1,38 +1,51 @@
 ﻿@page "/fetchdata"
+@using System.Numerics
 @inject HttpClient Http
 
-@if (_items == null)
+@if (_nodes == null)
 {
     <div>loading</div>
 }
 else
 {
-    @foreach (var item in _items)
+    @foreach (var node in _nodes)
     {
         <div class="absolute px-2 py-1 bg-zinc-200 rounded-md ring-1 ring-gray-900/10" style="
-            left: @(item.X)px;
-            top: @(item.Y)px;
-            width: @(item.Width)px;
-            height: @(item.Height)px">
-            @item.Contents
+            left: @(node.X)px;
+            top: @(node.Y)px;
+            width: @(node.Width)px;
+            height: @(node.Height)px" ondrag="event.preventDefault();" @ondragstart="DragStart" @ondragend="@(e => DragEnd(e, node))" draggable="true">
+            @node.Contents
         </div>
     }
 }
 
 @code {
-    private List<SimpleElement>? _items;
+    private List<SimpleElement>? _nodes;
+    private Vector2 _dragpositionstart;
+
     protected override async Task OnInitializedAsync()
     {
-        _items = Enumerable.Range(1, 10).Select(i => new SimpleElement
+        _nodes = Enumerable.Range(1, 10).Select(i => new SimpleElement
         {
             X = i * 20,
             Y = i * 30,
+            Contents = $"Henlo {i}",
         }).ToList();
+    }
 
-        foreach (var i in Enumerable.Range(1, 10))
-        {
+    void DragStart(DragEventArgs e)
+    {
+        _dragpositionstart = new Vector2((float)e.ClientX, (float)e.ClientY);
+    }
 
-        }
+    void DragEnd(DragEventArgs e, SimpleElement node)
+    {
+        var newpos = new Vector2((float)e.ClientX, (float)e.ClientY);
+
+        var newvalue = newpos - _dragpositionstart;
+        node.X += newvalue.X;
+        node.Y += newvalue.Y;
     }
 
     record SimpleElement
