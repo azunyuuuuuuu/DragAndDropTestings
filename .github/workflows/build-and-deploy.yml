@@ -1,0 +1,52 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Setup .NET SDK
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'
+        include-prerelease: true
+
+    - name: install the Blazor WASM AOT workload
+      run: dotnet workload install wasm-tools
+
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0 # avoid shallow clone so nbgv can do its work.
+
+    - name: Change base-tag in index.html from / to datathingies
+      run: sed -i 's|<base href="/" />|<base href="/DragAndDropTestings/" />|g' wwwroot/index.html
+    
+    - name: Copy index.html to 404.html
+      run: cp wwwroot/index.html wwwroot/404.html
+    
+    - run: dotnet restore DragAndDropTestings.csproj
+
+    - name: Publish .NET Core Project
+      run: dotnet publish DragAndDropTestings.csproj -c Release -o release --nologo
+    
+    - name: Add .nojekyll file
+      run: touch release/wwwroot/.nojekyll
+
+    - name: Commit wwwroot to GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@4.1.0
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        branch: gh-pages
+        commit-message: Update application on `gh-pages`
+        folder: release/wwwroot
+        silent: true
+        clean: true
+        clean-exclude: |
+          data/*.csv
