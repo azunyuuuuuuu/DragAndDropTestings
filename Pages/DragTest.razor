@@ -21,12 +21,12 @@ else
 }
 
 @code {
-    private List<SimpleElement>? _nodes;
+    private List<PageNode>? _nodes;
     private Vector2 _dragpositionstart;
 
     protected override void OnInitialized()
     {
-        _nodes = Enumerable.Range(1, 10).Select(i => new SimpleElement
+        _nodes = Enumerable.Range(1, 10).Select(i => new PageNode
         {
             X = i * 20,
             Y = i * 30,
@@ -39,7 +39,7 @@ else
         _dragpositionstart = new Vector2((float)e.ClientX, (float)e.ClientY);
     }
 
-    void DragEnd(DragEventArgs e, SimpleElement node)
+    void DragEnd(DragEventArgs e, PageNode node)
     {
         var newpos = new Vector2((float)e.ClientX, (float)e.ClientY);
 
@@ -48,7 +48,7 @@ else
         node.Y += newvalue.Y;
     }
 
-    record SimpleElement
+    record PageNode
     {
         public double X { get; set; } = 0;
         public double Y { get; set; } = 0;
