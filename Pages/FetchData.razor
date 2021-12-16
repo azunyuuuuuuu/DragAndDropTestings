@@ -1,57 +1,47 @@
 ﻿@page "/fetchdata"
 @inject HttpClient Http
 
-<PageTitle>Weather forecast</PageTitle>
-
-<h1>Weather forecast</h1>
-
-<p>This component demonstrates fetching data from the server.</p>
-
-@if (forecasts == null)
+@if (_items == null)
 {
-    <p><em>Loading...</em></p>
+    <div>loading</div>
 }
 else
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th>Temp. (C)</th>
-                <th>Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
-            {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    @foreach (var item in _items)
+    {
+        <div class="absolute px-2 py-1 bg-zinc-200 rounded-md ring-1 ring-gray-900/10" style="
+            left: @(item.X)px;
+            top: @(item.Y)px;
+            width: @(item.Width)px;
+            height: @(item.Height)px">
+            @item.Contents
+        </div>
+    }
 }
 
 @code {
-    private WeatherForecast[]? forecasts;
-
+    private List<SimpleElement>? _items;
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+        _items = Enumerable.Range(1, 10).Select(i => new SimpleElement
+        {
+            X = i * 20,
+            Y = i * 30,
+        }).ToList();
+
+        foreach (var i in Enumerable.Range(1, 10))
+        {
+
+        }
     }
 
-    public class WeatherForecast
+    record SimpleElement
     {
-        public DateTime Date { get; set; }
+        public double X { get; set; } = 0;
+        public double Y { get; set; } = 0;
+        public double Width { get; set; } = 140;
+        public double Height { get; set; } = 80;
 
-        public int TemperatureC { get; set; }
-
-        public string? Summary { get; set; }
-
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        public string Contents = "henlo :3";
     }
 }
