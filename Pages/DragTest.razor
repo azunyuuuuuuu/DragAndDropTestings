@@ -8,21 +8,24 @@
 }
 else
 {
-    @foreach (var node in _nodes)
-    {
-        <div class="absolute px-2 py-1 bg-zinc-200 rounded-md ring-1 ring-gray-900/10" style="
+    <div class="relative w-full h-full overflow-hidden" @ondrop="OnDrop" @ondragover="OnDragOver" @ondragover:preventDefault>
+        @foreach (var node in _nodes)
+        {
+            <div class="absolute px-2 py-1 bg-zinc-200 rounded-md ring-1 ring-gray-900/10" style="
             left: @(node.X)px;
             top: @(node.Y)px;
             width: @(node.Width)px;
-            height: @(node.Height)px" ondrag="event.preventDefault();" @ondragstart="DragStart" @ondragend="@(e => DragEnd(e, node))" draggable="true">
-            @node.Contents
-        </div>
-    }
+            height: @(node.Height)px" @ondragstart="@(e=>OnDrag(e, node))" draggable="true">
+                @node.Contents
+            </div>
+        }
+    </div>
 }
 
 @code {
     private List<PageNode>? _nodes;
     private Vector2 _dragpositionstart;
+    private PageNode? _dragnode = null;
 
     protected override void OnInitialized()
     {
@@ -34,19 +37,32 @@ else
         }).ToList();
     }
 
-    void DragStart(DragEventArgs e)
+    void OnDrag(DragEventArgs e, PageNode node)
     {
         _dragpositionstart = new Vector2((float)e.ClientX, (float)e.ClientY);
+        _dragnode = node;
+        e.DataTransfer.DropEffect = "move";
     }
 
-    void DragEnd(DragEventArgs e, PageNode node)
+    void OnDragOver(DragEventArgs e)
     {
+        e.DataTransfer.DropEffect = "move";
+    }
+
+    void OnDrop(DragEventArgs e)
+    {
+        if (_dragnode == null)
+            return;
+
         var newpos = new Vector2((float)e.ClientX, (float)e.ClientY);
 
         var newvalue = newpos - _dragpositionstart;
-        node.X += newvalue.X;
-        node.Y += newvalue.Y;
+        _dragnode.X += newvalue.X;
+        _dragnode.Y += newvalue.Y;
+
+        _dragnode = null;
     }
+
 
     record PageNode
     {
