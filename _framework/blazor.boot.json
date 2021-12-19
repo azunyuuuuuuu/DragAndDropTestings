@@ -7,8 +7,8 @@
   "linkerEnabled": true,
   "resources": {
     "assembly": {
-      "DragAndDropTestings.dll": "sha256-K0uV9WiFJqsWgS9BIRqzhHy67\/fgJ8Ngtm5CJY+N5ow=",
-      "Microsoft.AspNetCore.Components.dll": "sha256-\/PCn01DI1byFUJ02bIYQVePMhHDbddsRAxAqXu2t+hI=",
+      "DragAndDropTestings.dll": "sha256-1cIMeabFoKsD+gyJCtkTmVEFd218mbfLAHCp6vpLmBg=",
+      "Microsoft.AspNetCore.Components.dll": "sha256-K+ivOE6aC9fv9Z2baV1NylMN2dS7M8fhRmjB6WGWzg4=",
       "Microsoft.AspNetCore.Components.Web.dll": "sha256-lc+zkJTmDUCGZzmpG1SrqhJcCQig63mXtKz5RlCgVE0=",
       "Microsoft.AspNetCore.Components.WebAssembly.dll": "sha256-Ph2ZOl\/LOY2cCUG\/S2iA61YUWIsDlcAHFxzdTG43rPw=",
       "Microsoft.Extensions.Configuration.Abstractions.dll": "sha256-zhFtW4kE16TdrpPne9I1Cu9o0KYzrS50VE9MVSifJg4=",
@@ -34,7 +34,7 @@
       "System.Private.Runtime.InteropServices.JavaScript.dll": "sha256-qi77gYVxMlCsbJi31oZqGaIW077cYdFy3LFk+dt2z6k=",
       "System.Private.Uri.dll": "sha256-LwHecQtBtNw8eIBpUBg03RXEXenbeHT18f0iFhb8M6M=",
       "System.Runtime.CompilerServices.Unsafe.dll": "sha256-NJPcPizDV6A4CjOnszxYro9mJMWaHq2cGM2\/A0bAFNY=",
-      "System.Runtime.dll": "sha256-MtNJAfDD79QsBgbfB5U3xqTnwh6P\/B\/sti+lGUNLjNg=",
+      "System.Runtime.dll": "sha256-DkBNtegsfhIgAyrl37HEXrcsqJ3uh60n+DzVihIBLSg=",
       "System.Text.Encodings.Web.dll": "sha256-gUV2fOrOUGrNK6Oj1AxlN44sKTuN4hYA1DxX8xuRU2c=",
       "System.Text.Json.dll": "sha256-JqsfW50WFKqrjpqWUq9Ium5diNkoTKkumNONBkI3sik="
     },
