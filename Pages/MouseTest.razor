@@ -41,6 +41,9 @@ else
     {
         _node = node;
         _offset = new Vector2((float)(node.X - e.ClientX), (float)(node.Y - e.ClientY));
+        
+        _nodes?.Remove(_node);
+        _nodes?.Add(_node);
     }
 
     void OnMouseUp(MouseEventArgs e)
