@@ -1,4 +1,4 @@
-﻿@page "/simpledrag"
+@page "/ondrag"
 @using System.Numerics
 @inject HttpClient Http
 
@@ -8,7 +8,8 @@
 }
 else
 {
-    <div class="relative w-full h-full overflow-hidden" @ondrop="OnDrop" @ondragover="OnDragOver" @ondragover:preventDefault>
+    <div class="relative w-full h-full overflow-hidden" @ondrop="OnDrop" @ondragover="OnDragOver"
+    @ondragover:preventDefault>
         @foreach (var node in _nodes)
         {
             <div class="absolute px-2 py-1 bg-zinc-200 rounded-md ring-1 ring-gray-900/10" style="
@@ -23,13 +24,13 @@ else
 }
 
 @code {
-    private List<PageNode>? _nodes;
+    private List<Node>? _nodes;
+    private Node? _node = null;
     private Vector2 _dragpositionstart;
-    private PageNode? _dragnode = null;
 
     protected override void OnInitialized()
     {
-        _nodes = Enumerable.Range(1, 10).Select(i => new PageNode
+        _nodes = Enumerable.Range(1, 10).Select(i => new Node
         {
             X = i * 20,
             Y = i * 30,
@@ -37,10 +38,10 @@ else
         }).ToList();
     }
 
-    void OnDrag(DragEventArgs e, PageNode node)
+    void OnDrag(DragEventArgs e, Node node)
     {
         _dragpositionstart = new Vector2((float)e.ClientX, (float)e.ClientY);
-        _dragnode = node;
+        _node = node;
         e.DataTransfer.DropEffect = "move";
     }
 
@@ -51,20 +52,20 @@ else
 
     void OnDrop(DragEventArgs e)
     {
-        if (_dragnode == null)
+        if (_node == null)
             return;
 
         var newpos = new Vector2((float)e.ClientX, (float)e.ClientY);
 
         var newvalue = newpos - _dragpositionstart;
-        _dragnode.X += newvalue.X;
-        _dragnode.Y += newvalue.Y;
+        _node.X += newvalue.X;
+        _node.Y += newvalue.Y;
 
-        _dragnode = null;
+        _node = null;
     }
 
 
-    record PageNode
+    record Node
     {
         public double X { get; set; } = 0;
         public double Y { get; set; } = 0;

@@ -1,4 +1,4 @@
-﻿@page "/simplemouse"
+﻿@page "/onmouse"
 @using System.Numerics
 @inject HttpClient Http
 
@@ -23,14 +23,13 @@ else
 }
 
 @code {
-    private List<PageNode>? _nodes;
-    private Vector2 _dragpositionstart;
-    private PageNode? _dragnode = null;
-    private Vector2 _nodeoffset = Vector2.Zero;
+    private List<Node>? _nodes;
+    private Node? _node = null;
+    private Vector2 _offset = Vector2.Zero;
 
     protected override void OnInitialized()
     {
-        _nodes = Enumerable.Range(1, 10).Select(i => new PageNode
+        _nodes = Enumerable.Range(1, 10).Select(i => new Node
         {
             X = i * 20,
             Y = i * 30,
@@ -38,27 +37,27 @@ else
         }).ToList();
     }
 
-    void OnMouseDown(MouseEventArgs e, PageNode node)
+    void OnMouseDown(MouseEventArgs e, Node node)
     {
-        _dragnode = node;
-        _nodeoffset = new Vector2((float)(node.X - e.ClientX), (float)(node.Y - e.ClientY));
+        _node = node;
+        _offset = new Vector2((float)(node.X - e.ClientX), (float)(node.Y - e.ClientY));
     }
 
     void OnMouseUp(MouseEventArgs e)
     {
-        _dragnode = null;
+        _node = null;
     }
 
     void OnMouseMove(MouseEventArgs e)
     {
-        if (_dragnode == null)
+        if (_node == null)
             return;
 
-        _dragnode.X = e.ClientX + _nodeoffset.X;
-        _dragnode.Y = e.ClientY + _nodeoffset.Y;
+        _node.X = e.ClientX + _offset.X;
+        _node.Y = e.ClientY + _offset.Y;
     }
 
-    record PageNode
+    record Node
     {
         public double X { get; set; } = 0;
         public double Y { get; set; } = 0;
