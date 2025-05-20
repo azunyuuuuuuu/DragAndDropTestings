@@ -1,4 +1,4 @@
-﻿@page "/onmouse"
+﻿@page "/onmousedialog"
 @using System.Numerics
 @inject HttpClient Http
 
@@ -11,13 +11,13 @@ else
     <div class="relative w-full h-full overflow-hidden" @onmouseup="OnMouseUp" @onmousemove="OnMouseMove">
         @foreach (var node in _nodes)
         {
-            <div class="absolute px-2 py-1 bg-zinc-200 rounded-md ring-1 ring-gray-900/10" style="
+            <dialog open class=" ml-0 mt-0 px-2 py-1 bg-zinc-200 rounded-md ring-1 ring-gray-900/10" style="
             left: @(node.X)px;
             top: @(node.Y)px;
             width: @(node.Width)px;
             height: @(node.Height)px" @onmousedown="@(e=>OnMouseDown(e, node))">
                 @node.Contents
-            </div>
+            </dialog>
         }
     </div>
 }
@@ -41,7 +41,7 @@ else
     {
         _node = node;
         _offset = new Vector2((float)(node.X - e.ClientX), (float)(node.Y - e.ClientY));
-
+        
         _nodes?.Remove(_node);
         _nodes?.Add(_node);
     }
